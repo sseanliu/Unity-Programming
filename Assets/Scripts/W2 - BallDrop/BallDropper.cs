@@ -14,21 +14,16 @@ public class BallDropper : MonoBehaviour
 
     void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal"); // A & D
-        float verticalInput = Input.GetAxis("Vertical");     // W & S
-        
-        Vector3 movement = new Vector3(horizontalInput, 0, verticalInput);
+        // Forward/Backward movement with W/S
+        float verticalInput = Input.GetAxis("Vertical");
+        Vector3 movement = transform.forward * verticalInput;
         transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
 
-        if (Input.GetKey(KeyCode.Q))
-        {
-            transform.Rotate(0, -rotationSpeed * Time.deltaTime, 0);
-        }
-        if (Input.GetKey(KeyCode.E))
-        {
-            transform.Rotate(0, rotationSpeed * Time.deltaTime, 0);
-        }
+        // Rotation with A/D
+        float horizontalInput = Input.GetAxis("Horizontal");
+        transform.Rotate(0, horizontalInput * rotationSpeed * Time.deltaTime, 0);
 
+        // Shooting with Space
         if (Input.GetKeyDown(KeyCode.Space))
         {
             GameObject ball = Instantiate(ballPrefab, transform.position + transform.forward, Quaternion.identity);
