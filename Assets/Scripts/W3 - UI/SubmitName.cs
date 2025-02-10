@@ -3,7 +3,7 @@ using TMPro;
 public class SubmitName : MonoBehaviour
 {
     public TextMeshProUGUI nameText;
-    string playerName = "";  
+    public string playerName = "";  
     void Start()
     {
         
