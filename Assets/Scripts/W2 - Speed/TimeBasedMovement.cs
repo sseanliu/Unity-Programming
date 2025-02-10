@@ -4,34 +4,27 @@ using TMPro;
 
 public class TimeBasedMovement : MonoBehaviour
 {
-    public float speed = 2;
-    public float time;
     public TextMeshProUGUI displayText;
+    private int lastScore = 0;
+    private int targetsHit = 0;
 
-    public float GameTime = 3;
     void Start()
     {
-        // displayText.text = "Hello World";
+        UpdateScoreDisplay();
     }
 
-    // Update is called once per frame
     void Update()
     {
-
-        time += Time.deltaTime;
-
-        // Move the object
-        Vector3 newPos = transform.position;
-        newPos.x += speed * Time.deltaTime;
-        transform.position = newPos;
-
-        // Update the display text
-        displayText.text = "Time: " + (GameTime - (int)time);
-
-        // Check if the game is over
-        if (time > GameTime)
+        if (lastScore != TargetScript.TotalScore)
         {
-            displayText.text = "Game Over";
+            targetsHit++;
+            lastScore = TargetScript.TotalScore;
+            UpdateScoreDisplay();
         }
+    }
+
+    void UpdateScoreDisplay()
+    {
+        displayText.text = $"Score: {lastScore}";
     }
 }

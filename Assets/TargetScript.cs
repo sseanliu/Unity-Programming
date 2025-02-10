@@ -2,25 +2,51 @@ using UnityEngine;
 
 public class TargetScript : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public int scoreValue = 10;
+    private static int totalScore = 0;
+    
+    public float moveSpeed = 3f;
+    public float moveRange = 5f;
+    private float startingX;
+    private float direction = 1f;
+    
+    public static int TotalScore
+    {
+        get { return totalScore; }
+    }
+
     void Start()
     {
-        
+        startingX = transform.position.x;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
-    }
+        Vector3 position = transform.position;
+        position.x += direction * moveSpeed * Time.deltaTime;
 
-    void OnTriggerEnter(Collider other)
-    {
-        Debug.Log(other.name + " entered the trigger");
+        if (position.x >= startingX + moveRange)
+        {
+            position.x = startingX + moveRange;
+            direction = -1f;
+        }
+        else if (position.x <= startingX - moveRange)
+        {
+            position.x = startingX - moveRange;
+            direction = 1f;
+        }
+
+        transform.position = position;
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.gameObject.name + " collided with " + name);
+        if (collision.gameObject.CompareTag("Projectile"))
+        {
+            totalScore += scoreValue;
+            Debug.Log($"Hit! Score: {totalScore}");
+            Destroy(collision.gameObject);
+            Destroy(gameObject);
+        }
     }
 }
