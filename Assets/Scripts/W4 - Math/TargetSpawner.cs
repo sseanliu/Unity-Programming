@@ -10,10 +10,12 @@ public class TargetSpawner : MonoBehaviour
     public int maxTargets = 5;
 
     private float nextSpawnTime;
+    public Transform PlayerTransform;
+    public FollowTypeEnum followType;
 
     void Start()
     {
-        nextSpawnTime = Time.time + spawnInterval;
+        nextSpawnTime = Time.time + spawnInterval;        
     }
 
     void Update()
@@ -34,6 +36,9 @@ public class TargetSpawner : MonoBehaviour
         );
 
         GameObject target = Instantiate(targetPrefab, randomPosition, Quaternion.identity);
+        var targetFollow = target.GetComponent<TargetScriptFollow>();
+        targetFollow.PlayerTransform = PlayerTransform;
+        targetFollow.followType = followType;
         target.tag = "Target";
     }
 
@@ -42,5 +47,20 @@ public class TargetSpawner : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(transform.position + new Vector3(0, (minHeight + maxHeight)/2, 0), 
             new Vector3(spawnAreaSize.x, maxHeight - minHeight, spawnAreaSize.z));
+    }
+
+    void OnEnable()
+    {
+        FollowType.OnFollowTypeChanged += HandleFollowTypeChanged;
+    }
+
+    void OnDisable()
+    {
+        FollowType.OnFollowTypeChanged -= HandleFollowTypeChanged;
+    }
+
+    void HandleFollowTypeChanged(FollowTypeEnum newFollowType)
+    {
+        followType = newFollowType;
     }
 }
