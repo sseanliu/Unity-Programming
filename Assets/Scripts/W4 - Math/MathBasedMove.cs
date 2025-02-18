@@ -1,16 +1,24 @@
 using UnityEngine;
 
-public class MathBasedMove : MonoBehaviour
+public class MathBasedMoveLerp : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public float speed = 1f;
+    public Vector3 startPosition;
+    public Vector3 endPosition;
+
+    private float journeyLength;
+    private float startTime;
+
     void Start()
     {
-        
+        startTime = Time.time;
+        journeyLength = Vector3.Distance(startPosition, endPosition);
     }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        float distCovered = (Time.time - startTime) * speed;
+        float fractionOfJourney = distCovered / journeyLength;
+        transform.position = Vector3.Lerp(startPosition, endPosition, fractionOfJourney);
     }
 }
