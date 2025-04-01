@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class ObjectClicker3D : MonoBehaviour
 {
-    GameManager gameManager;
+    W5GameManager.GameManager gameManager;
     void Start()
     {
         Camera mainCamera = Camera.main;
         GameObject gameManagerObject = GameObject.Find("GameManagerHolder");
-        gameManager = gameManagerObject.GetComponent<GameManager>();
+        gameManager = gameManagerObject.GetComponent<W5GameManager.GameManager>();
 
         if (mainCamera != null)
         {
